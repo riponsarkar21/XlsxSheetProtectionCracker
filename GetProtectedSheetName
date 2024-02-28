@@ -1,0 +1,32 @@
+import openpyxl
+
+def check_excel_protection(file_path, keywords):
+    # Load the Excel workbook
+    workbook = openpyxl.load_workbook(file_path)
+
+    # Iterate through each sheet in the workbook
+    for sheet_name in workbook.sheetnames:
+        sheet = workbook[sheet_name]
+
+        # Check if the sheet is protected
+        if sheet.protection.sheet:
+            print(f"Sheet '{sheet_name}' is protected.")
+
+            # Iterate through the list of keywords
+            for keyword in keywords:
+                # Check if the keyword is present in any cell of the sheet
+                keyword_found = any(keyword in cell.value.lower() if cell.value else False for row in sheet.iter_rows() for cell in row)
+                
+                if keyword_found:
+                    print(f"Keyword '{keyword}' found in sheet '{sheet_name}'.")
+        else:
+            print(f"Sheet '{sheet_name}' is not protected.")
+
+    # Close the workbook
+    workbook.close()
+
+# Example usage
+file_path = 'test.xlsx'
+
+
+check_excel_protection(file_path, keywords)
