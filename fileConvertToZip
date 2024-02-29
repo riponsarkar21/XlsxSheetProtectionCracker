@@ -1,0 +1,21 @@
+import zipfile
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+
+# Create a Tkinter root window (it won't be shown)
+root = Tk()
+root.withdraw()
+
+# Ask the user to select a zip file using Windows Explorer
+zip_file_path = askopenfilename(filetypes=[("Zip Files", "*.zip")])
+
+# Check if the user selected a file
+if zip_file_path:
+    # Create a ZipFile object
+    with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
+        # Extract the contents to the same directory
+        zip_file.extractall()
+
+    print(f"Contents of '{zip_file_path}' have been extracted to the same directory.")
+else:
+    print("No zip file selected.")
